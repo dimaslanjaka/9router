@@ -475,6 +475,18 @@ export default function ProxyPoolsPage() {
       };
     }
 
+    if (parts.length === 2) {
+      const [host, port] = parts;
+      if (!host || !port) {
+        throw new Error("Invalid host:port format");
+      }
+      const proxyUrl = `http://${host}:${port}`;
+      return {
+        proxyUrl,
+        name: `Imported ${host}:${port}`,
+      };
+    }
+
     throw new Error("Unsupported format");
   };
 
@@ -789,11 +801,11 @@ export default function ProxyPoolsPage() {
             <textarea
               value={batchImportText}
               onChange={(e) => setBatchImportText(e.target.value)}
-              placeholder={"http://user:pass@127.0.0.1:7897\n127.0.0.1:7897:user:pass"}
+              placeholder={"http://user:pass@127.0.0.1:7897\n127.0.0.1:7897:user:pass\n127.0.0.1:7897"}
               className="w-full min-h-[180px] py-2 px-3 text-sm text-text-main bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-md focus:ring-1 focus:ring-primary/30 focus:border-primary/50 focus:outline-none transition-all"
             />
             <p className="text-xs text-text-muted mt-1">
-              Supported formats: protocol://user:pass@host:port, host:port:user:pass
+              Supported formats: protocol://user:pass@host:port, host:port:user:pass, host:port
             </p>
           </div>
 
