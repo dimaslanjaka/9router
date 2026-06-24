@@ -1,9 +1,22 @@
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { execSync } from "node:child_process";
 
 const projectRoot = dirname(fileURLToPath(import.meta.url));
-// CLI bundling needs workspace root so tracing includes hoisted node_modules (slim ~50MB).
-// Docker / default uses projectRoot so server.js lands at /app/server.js (not nested).
+
+// Run provider filter before build
+console.log("[next.config] Running provider filter...");
+try {
+  execSync(`node "${join(projectRoot, "scripts/filter-providers.mjs")}"`, {
+    stdio: "inherit",
+    cwd: projectRoot,
+  });
+} catch (err) {
+  console.error("[next.config] Provider filter failed:", err.message);
+  process.exit(1);
+}
+// Use projectRoot for tracing to avoid scanning entire workspace (slow on Windows, huge memory).
+// Set NEXT_TRACING_ROOT_MODE=workspace only for CLI bundling which needs hoisted deps.
 const tracingRoot = process.env.NEXT_TRACING_ROOT_MODE === "workspace"
   ? join(projectRoot, "..")
   : projectRoot;

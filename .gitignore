@@ -79,3 +79,4 @@ open-sse.old/
 # custom
 /tmp
 /.opencode/memory/
+*.lock
