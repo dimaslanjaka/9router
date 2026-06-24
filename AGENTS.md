@@ -11,6 +11,13 @@ Monorepo with three packages:
 | Tests | `tests/` | Vitest unit tests for translators/executors |
 | Core SSE/Translation | `open-sse/` | Shared routing, translation, executor logic |
 
+## Git Workflow
+
+- **Only stage specific files** — never `git add .`, `git add -A`, or `git add --all`
+- The build process auto-generates several files (`open-sse/providers/registry/index.js`, `open-sse/executors/index.js`, `open-sse/translator/index.js`) that must NOT be committed
+- Review `git status` and stage exactly the files you changed with `git add <path>`
+- Before committing, always check `git diff --cached` to confirm only intended files are staged
+
 ## Key Commands
 
 ```bash
