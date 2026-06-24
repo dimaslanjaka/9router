@@ -85,3 +85,4 @@ open-sse/translator/index.js
 /tmp
 /.opencode/memory/
 *.lock
+*.tgz

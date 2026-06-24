@@ -12,8 +12,10 @@
     "build:bun": "bun --bun next build --webpack",
     "start:bun": "bun ./.next/standalone/server.js",
     "cli:pack": "npm --prefix cli run pack:cli",
+    "cli:pack:yarn": "cd cli && yarn pack:cli",
     "cli:publish": "npm --prefix cli run publish:cli",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "cd cli && touch yarn.lock && yarn"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
