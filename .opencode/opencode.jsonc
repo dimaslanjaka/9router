@@ -1,0 +1,163 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "nodejs-openai-compatible": {
+      "name": "nodejs openai compatible",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://localhost:5758/v1",
+        "apiKey": "{env:OPENAI_API_KEY}",
+        "timeout": 300000
+      },
+      "models": {
+        "auto": {
+          "name": "Auto Model"
+        },
+        "opencode": {
+          "name": "OpenCode + Proxy",
+          "headers": {
+            "X-Request-Provider": "opencode"
+          },
+          "tool_call": true,
+          "reasoning": true,
+          "interleaved": true,
+          "temperature": true,
+          "experimental": true
+        }
+      }
+    }
+  },
+  "mode": {
+    "build": {
+      "disable": true
+    },
+    "plan": {
+      "disable": true
+    }
+  },
+  "autoupdate": true,
+  "snapshot": true,
+  "formatter": false,
+  "lsp": true,
+  "shell": "cmd",
+  "plugin": [
+    "oh-my-opencode-slim@latest",
+    "envsitter-guard@latest",
+    "@tarquinen/opencode-smart-title@latest",
+    "@tarquinen/opencode-dcp@latest",
+    "superpowers@git+https://github.com/obra/superpowers.git",
+    "@zenobius/opencode-skillful"
+  ],
+  "instructions": [
+    "AGENTS.md"
+  ],
+  "mcp": {
+    "sequential-thinking": {
+      "enabled": true,
+      "timeout": 300000,
+      "type": "local",
+      "environment": {},
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "playwright": {
+      "enabled": true,
+      "timeout": 300000,
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+    "MCP SQLite Server": {
+      "enabled": false,
+      "timeout": 300000,
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "mcp-sqlite",
+        "D:/Repositories/workspace/packages/9router/tmp/database/9router.db"
+      ]
+    },
+    "ai-memory": {
+      "type": "local",
+      "timeout": 300000,
+      "command": [
+        "ai-memory",
+        "--db",
+        "D:/Repositories/workspace/packages/9router/.opencode/memory/memories.db",
+        "mcp",
+        "--tier",
+        "smart"
+      ],
+      "enabled": true
+    },
+    "octocode": {
+      "type": "local",
+      "timeout": 300000,
+      "command": [
+        "npx",
+        "-y",
+        "octocode-mcp@latest"
+      ],
+      "environment": {
+        "GITHUB_TOKEN": "{env:GITHUB_TOKEN}",
+        "ALLOWED_PATHS": "D:/Repositories/workspace/packages/9router",
+        "WORKSPACE_ROOT": "D:/Repositories/workspace/packages/9router"
+      }
+    },
+    "super-shell": {
+      "enabled": true,
+      "timeout": 300000,
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "super-shell-mcp",
+        "C:/Users/Dell"
+      ],
+      "cwd": "D:/Repositories/workspace/packages/9router",
+      "environment": {
+        "CUSTOM_SHELL": "C:/Users/Dell/AppData/Roaming/Local/Microsoft/WindowsApps/pwsh.exe",
+        "SUPER_SHELL_USE_SHELL": "true"
+      }
+    },
+    "fast-filesystem": {
+      "enabled": true,
+      "timeout": 300000,
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "fast-filesystem-mcp"
+      ],
+      "environment": {
+        "CREATE_BACKUP_FILES": "true",
+        "DEBUG_MCP": "true",
+        "MCP_LOG_FILE": "D:/Repositories/workspace/packages/9router/tmp/logs/fast-filesystem-mcp.log"
+      }
+    },
+    "filesystem": {
+      "enabled": true,
+      "timeout": 300000,
+      "type": "local",
+      "command": [
+        // "cmd",
+        // "/c",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:/Users/Dell/Desktop",
+        "D:/Repositories/workspace/packages/9router"
+      ]
+    }
+  },
+  "permission": {
+    "super-shell_*": "ask"
+  }
+}
