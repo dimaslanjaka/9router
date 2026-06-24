@@ -1,0 +1,44 @@
+name: Build CLI Release
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run cli:pack
+
+      - name: Stage tarball
+        run: |
+          mkdir -p release
+          cp 9router-*.tgz release/9router.tgz
+          rm 9router-*.tgz
+
+      - name: Commit release/
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add release/9router.tgz
+          git diff --cached --quiet || git commit \
+            -m "chore(release): update 9router.tgz [skip ci]" \
+            -m "Triggered by: ${RUN_URL}" \
+            -m "Commit: ${COMMIT_URL}"
+          git push
