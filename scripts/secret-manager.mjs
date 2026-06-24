@@ -8,10 +8,12 @@
  *   node scripts/secret-manager.mjs --target <path> # operate on custom file
  */
 
-import 'dotenv/config';
+import dotenv from 'dotenv'
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+dotenv.config({ override: true, quiet: true });
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -62,8 +64,10 @@ function maskSecrets(content) {
 // ── Restore mode ──────────────────────────────────────────────────────
 
 function restoreSecrets(content) {
-  const result = content.replace(/\{env:(\w+)\}/g, (match, envName) =>
-    process.env[envName] !== undefined ? process.env[envName] : match,
+  const result = content.replace(/\{env:(\w+)\}/g, (match, envName) => {
+    // console.log(match, envName)
+    return process.env[envName] !== undefined ? process.env[envName] : match
+  }
   );
   return { content: result, changed: result !== content };
 }
