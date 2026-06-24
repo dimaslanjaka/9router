@@ -86,3 +86,4 @@ open-sse/translator/index.js
 /.opencode/memory/
 *.lock
 *.tgz
+!/release/*.tgz
