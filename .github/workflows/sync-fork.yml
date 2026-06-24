@@ -1,0 +1,25 @@
+name: Sync fork with upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # daily at midnight
+  workflow_dispatch:        # manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add upstream remote and sync
+        run: |
+          git remote add upstream https://github.com/decolua/9router 2>/dev/null || git remote set-url upstream https://github.com/decolua/9router
+          git fetch upstream
+          git checkout master
+          git merge upstream/master
+          git push origin master
