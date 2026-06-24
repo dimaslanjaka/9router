@@ -19,7 +19,11 @@ const nextConfig = {
   },
   outputFileTracingRoot: tracingRoot,
   outputFileTracingExcludes: {
-    "*": ["./gitbook/**/*"]
+    "*": ["./gitbook/**/*"],
+    // Windows: exclude system junction/reparse points that cause EPERM
+    // when Next.js bundled glob scans outside the project root.
+    // Known issue with Next.js 14-16 on Windows.
+    // See: https://github.com/vercel/next.js/discussions/62281
   },
   images: {
     unoptimized: true
