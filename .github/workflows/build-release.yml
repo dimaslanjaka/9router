@@ -14,10 +14,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+            **/tmp
+            **/.yarn
+            **/.next*
+            cli/.build-home
+            cli/app
+          key: npm-${{ hashFiles('package.json', 'cli/package.json') }}
+          restore-keys: npm-
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - run: npm install
 
